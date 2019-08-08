@@ -25,6 +25,18 @@ sigma = zeros(1, size(X, 2));
 %
 % Hint: You might find the 'mean' and 'std' functions useful.
 %       
+for i=1:length(mu)
+	mu(i) = mean(X(:,i));
+end;
+
+for j=1:length(sigma)
+	sigma(j) = std(X(:,j));
+end;
+
+for k=1:size(X,2)
+	X_norm(:,k) = (X_norm(:,k)-mu(k))/sigma(k);
+end;
+
 
 
 

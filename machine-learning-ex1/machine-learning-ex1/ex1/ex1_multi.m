@@ -82,18 +82,37 @@ X = [ones(m, 1) X];
 fprintf('Running gradient descent ...\n');
 
 % Choose some alpha value
-alpha = 0.01;
-num_iters = 400;
+%alpha = 0.01;
+alpha = [0.01;0.03;0.1;0.3];
+colors = cellstr(['-r';'-g';'-b';'-y']);
+num_iters = 50;
 
 % Init Theta and Run Gradient Descent 
-theta = zeros(3, 1);
-[theta, J_history] = gradientDescentMulti(X, y, theta, alpha, num_iters);
+
+figure;
+for alphas = 1:length(alpha)
+	theta = zeros(3, 1);
+	[theta, J_history] = gradientDescentMulti(X, y, theta, alpha(alphas), num_iters);
+	% Plot
+	plot(1:numel(J_history),J_history,colors(alphas),'LineWidth',2);
+	hold on;
+end
+hold off;
 
 % Plot the convergence graph
-figure;
-plot(1:numel(J_history), J_history, '-b', 'LineWidth', 2);
 xlabel('Number of iterations');
 ylabel('Cost J');
+alpha_str = ['0.01';'0.03';'0.1';'0.3'];
+legend(alpha_str);
+
+% Best learning rate found was 0.1
+figure;
+alpha = 0.1;
+theta = zeros(3, 1);
+[theta, J_history] = gradientDescentMulti(X, y, theta, alpha, num_iters);
+plot(1:numel(J_history), J_history, '-b', 'LineWidth', 2);
+xlabel('Number of Iterations');
+ylabel('Cost of J');
 
 % Display gradient descent's result
 fprintf('Theta computed from gradient descent: \n');
@@ -104,7 +123,9 @@ fprintf('\n');
 % ====================== YOUR CODE HERE ======================
 % Recall that the first column of X is all-ones. Thus, it does
 % not need to be normalized.
-price = 0; % You should change this
+new_house_xj = [ 1650, 3];
+[new_house_xj_normalized, mu_new_house, std_new_house] = featureNormalize(new_house_xj);
+price = [ 1, new_house_xj_normalized ] * theta;
 
 
 % ============================================================
